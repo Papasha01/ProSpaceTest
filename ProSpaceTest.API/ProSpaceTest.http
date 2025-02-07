@@ -1,0 +1,6 @@
+@ProSpaceTest_HostAddress = http://localhost:5186
+
+GET {{ProSpaceTest_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
