@@ -5,11 +5,12 @@
 Проект представляет собой тестовое задание для компании ProSpace. Реализованы основные функции для работы с заказчиками, товарами и заказами через веб-интерфейс. Приложение построено на архитектуре с разделением на слои: представление, бизнес-логика, доступ к данным.
 
 ## Пример работы приложения
-![chrome_9J1fVE7TiX](https://github.com/user-attachments/assets/eeec4706-f760-4089-90e9-6fab5bfe7d0b)
+![eeec4706-f760-4089-90e9-6fab5bfe7d0b](https://github.com/user-attachments/assets/721f25c5-1d44-4e8e-b217-b043a9b8a843)
 
-![chrome_YhjmS95M9P](https://github.com/user-attachments/assets/1b78ea09-a815-431f-86f4-f3b59e765e04)
+![1b78ea09-a815-431f-86f4-f3b59e765e04](https://github.com/user-attachments/assets/fc1089d8-c517-4c89-8a28-38f0696b89f1)
 
-![chrome_gZoFKlssrr](https://github.com/user-attachments/assets/987763cc-1d67-41ea-b8cc-3c0f8456a2db)
+![987763cc-1d67-41ea-b8cc-3c0f8456a2db](https://github.com/user-attachments/assets/0c86bb45-40f3-4447-bc53-a468b5ecd93e)
+
 
 
 ## Структура проекта
