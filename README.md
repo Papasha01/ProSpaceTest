@@ -2,14 +2,19 @@
 
 ## Описание проекта
 
-Проект представляет собой тестовое задание для компании ProSpace. Реализованы основные функции для работы с заказчиками, товарами и заказами через веб-интерфейс. Приложение построено на архитектуре с разделением на слои: представление, бизнес-логика, доступ к данным.
+Этот проект представляет собой тестовое задание для компании ProSpace. 
+
+Это мой первый веб-проект, в котором я реализовал полноценное веб-приложение с использованием как backend, так и frontend технологий. До этого я занимался исключительно backend-разработкой. 
 
 ## Пример работы приложения
-![chrome_9J1fVE7TiX](https://github.com/user-attachments/assets/eeec4706-f760-4089-90e9-6fab5bfe7d0b)
+![msedge_Kcrlh4TSAB](https://github.com/user-attachments/assets/dbf19ad6-686b-4b93-8c67-53829b8db16d)
 
-![chrome_YhjmS95M9P](https://github.com/user-attachments/assets/1b78ea09-a815-431f-86f4-f3b59e765e04)
+![1b78ea09-a815-431f-86f4-f3b59e765e04](https://github.com/user-attachments/assets/fc1089d8-c517-4c89-8a28-38f0696b89f1)
 
-![chrome_gZoFKlssrr](https://github.com/user-attachments/assets/987763cc-1d67-41ea-b8cc-3c0f8456a2db)
+![987763cc-1d67-41ea-b8cc-3c0f8456a2db](https://github.com/user-attachments/assets/0c86bb45-40f3-4447-bc53-a468b5ecd93e)
+
+## API
+![chrome_dp9mqnw9fr](https://github.com/user-attachments/assets/8015a9de-56b8-476b-aefc-16e1f2499b3e)
 
 
 ## Структура проекта
@@ -36,7 +41,7 @@
 5. **prospacetest.ClientApp**  
    - Веб-интерфейс, реализованный на Vue.js 3
 
----
+
 
 ## Технологии
 
@@ -62,4 +67,4 @@
    - Просмотр каталога товаров
    - Создание заказов
    - Просмотр и фильтрация заказов по статусу
-   - Удаление заказо
+   - Удаление заказов
