@@ -17,15 +17,9 @@ namespace ProSpaceTest.API.Controllers
             _userService = userService;
         }
 
-        /// <summary>
-        /// Аутентификация пользователя.
-        /// </summary>
-        /// <param name="request">Запрос с логином и паролем</param>
-        /// <returns>Информация о пользователе или ошибка 401 (Unauthorized)</returns>
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] AuthRequest request)
         {
-            // Проверяем входные данные
             if (string.IsNullOrWhiteSpace(request.Login) || string.IsNullOrWhiteSpace(request.Password))
             {
                 return BadRequest("Login and password are required.");
@@ -33,10 +27,8 @@ namespace ProSpaceTest.API.Controllers
 
             try
             {
-                // Вызываем сервис для аутентификации
                 var user = await _userService.Authenticate(request.Login, request.Password);
 
-                // Преобразуем модель User в AuthResponse
                 var response = new AuthResponse(
                     Id: user.Id,
                     Login: user.Login,
@@ -57,15 +49,9 @@ namespace ProSpaceTest.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Получение пользователя по ID.
-        /// </summary>
-        /// <param name="id">ID пользователя</param>
-        /// <returns>Информация о пользователе или ошибка 404 (Not Found)</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
-            // Проверяем входные данные
             if (id == Guid.Empty)
             {
                 return BadRequest("User ID is required.");
@@ -73,10 +59,8 @@ namespace ProSpaceTest.API.Controllers
 
             try
             {
-                // Вызываем сервис для получения пользователя
                 var user = await _userService.GetUserById(id);
 
-                // Преобразуем модель User в UserResponse
                 var response = new UserResponse(
                     Id: user.Id,
                     Login: user.Login,

@@ -98,10 +98,9 @@ namespace ProSpaceTest.Controllers
                     OrderItems = new List<OrderItem>()
                 };
 
-                // Асинхронное получение цены для каждого элемента заказа
                 foreach (var itemRequest in request.OrderItems)
                 {
-                    var item = await _itemService.GetItemById(itemRequest.ItemId); // Асинхронно получаем товар
+                    var item = await _itemService.GetItemById(itemRequest.ItemId);
                     if (item == null)
                     {
                         return NotFound($"Item with ID {itemRequest.ItemId} not found");
@@ -111,7 +110,7 @@ namespace ProSpaceTest.Controllers
                     {
                         ItemId = itemRequest.ItemId,
                         ItemsCount = itemRequest.ItemsCount,
-                        ItemPrice = item.Price // Устанавливаем цену из товара
+                        ItemPrice = item.Price 
                     };
 
                     order.OrderItems.Add(orderItem);
