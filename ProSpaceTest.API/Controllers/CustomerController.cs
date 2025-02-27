@@ -30,12 +30,32 @@ namespace ProSpaceTest.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CustomerResponse>> GetById(Guid id)
+        [HttpGet("GetById/{id}")]
+        public async Task<ActionResult<CustomerResponse>> GetCustomerById(Guid id)
         {
             try
             {
                 var customer = await _customerService.GetCustomerById(id);
+                var response = new CustomerResponse(
+                    customer.Id,
+                    customer.Name,
+                    customer.Code,
+                    customer.Address,
+                    customer.Discount);
+
+                return Ok(response);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Customer not found");
+            }
+        }
+        [HttpGet("GetCustomerByUserId/{id}")]
+        public async Task<ActionResult<CustomerResponse>> GetCustomerByUserId(Guid id)
+        {
+            try
+            {
+                var customer = await _customerService.GetCustomerByUserId(id);
                 var response = new CustomerResponse(
                     customer.Id,
                     customer.Name,
@@ -84,6 +104,7 @@ namespace ProSpaceTest.Controllers
             {
                 var (customer, error) = Customer.Create(
                     Guid.NewGuid(),
+                    request.UserId,
                     request.Name,
                     request.Code,
                     request.Address,
@@ -95,7 +116,7 @@ namespace ProSpaceTest.Controllers
                 }
 
                 var id = await _customerService.CreateCustomer(customer);
-                return CreatedAtAction(nameof(GetById), new { id }, id);
+                return CreatedAtAction(nameof(GetCustomerById), new { id }, id);
             }
             catch (ArgumentException ex)
             {
@@ -104,7 +125,7 @@ namespace ProSpaceTest.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] CustomerRequest request)
+        public async Task<IActionResult> Update(Guid id, [FromBody] CustomerUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -122,8 +143,8 @@ namespace ProSpaceTest.Controllers
                     Discount = request.Discount
                 };
 
-                var updatedId = await _customerService.UpdateCustomer(customer);
-                return NoContent();
+                await _customerService.UpdateCustomer(customer);
+                return Accepted();
             }
             catch (KeyNotFoundException ex)
             {
@@ -141,7 +162,7 @@ namespace ProSpaceTest.Controllers
             try
             {
                 await _customerService.DeleteCustomer(id);
-                return NoContent();
+                return Accepted();
             }
             catch (KeyNotFoundException)
             {

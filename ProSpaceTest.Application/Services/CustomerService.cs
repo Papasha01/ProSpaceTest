@@ -17,7 +17,6 @@ namespace ProSpaceTest.Application.Services
 
         public async Task<Guid> CreateCustomer(Core.Models.Customer customer)
         {
-            // Валидация данных перед созданием
             if (string.IsNullOrWhiteSpace(customer.Code))
                 throw new ArgumentException("Customer code cannot be empty");
 
@@ -52,6 +51,16 @@ namespace ProSpaceTest.Application.Services
         public async Task<Core.Models.Customer> GetCustomerById(Guid id)
         {
             var customer = await _customerRepository.GetCustomerById(id);
+
+            if (customer == null)
+                throw new KeyNotFoundException("Customer not found");
+
+            return customer;
+        }
+
+        public async Task<Customer> GetCustomerByUserId(Guid id)
+        {
+            var customer = await _customerRepository.GetCustomerByUserId(id);
 
             if (customer == null)
                 throw new KeyNotFoundException("Customer not found");

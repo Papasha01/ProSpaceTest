@@ -11,5 +11,9 @@ namespace ProSpaceTest.Core.Abstractions
     {
         Task<User> Authenticate(string login, string password);
         Task<User> GetUserById(Guid id);
+        Task<List<User>> GetAllUsers();
+        Task<Guid> CreateUser(User user);
+        Task<Guid> UpdateUser(User user);
+        Task<Guid> DeleteUser(Guid id);
     }
 }

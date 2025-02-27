@@ -43,7 +43,7 @@
     methods: {
       async login() {
         try {
-          const response = await fetch('https://localhost:7077/api/auth/authenticate', {
+          const response = await fetch('https://localhost:7077/api/User/authenticate', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

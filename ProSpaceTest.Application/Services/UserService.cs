@@ -32,6 +32,26 @@ namespace ProSpaceTest.Application.Services
             return user;
         }
 
+        public async Task<Guid> CreateUser(User user)
+        {
+            return await _userRepository.CreateUser(user);
+        }
+
+        public async Task<List<User>> GetAllUsers()
+        {
+            return await _userRepository.GetAllUsers();
+        }
+
+        public async Task<Guid> DeleteUser(Guid id)
+        {
+            return await _userRepository.DeleteUser(id);
+        }
+
+        public Task<Guid> UpdateUser(User user)
+        {
+            return _userRepository.UpdateUser(user);
+        }
+
         public async Task<User> GetUserById(Guid id)
         {
             if (id == Guid.Empty)
@@ -48,5 +68,6 @@ namespace ProSpaceTest.Application.Services
 
             return user;
         }
+
     }
 }

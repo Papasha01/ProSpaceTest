@@ -1,7 +1,6 @@
 <template>
   <div class="order-manager">
     <h3 class="heading">Управление заказами</h3>
-    <!-- Фильтр по статусу -->
     <div class="filter">
       <label for="status-filter" class="filter-label">Фильтр по статусу:</label>
       <select id="status-filter" v-model="statusFilter" class="filter-select">
@@ -10,7 +9,6 @@
         <option value="Done">Выполнен</option>
       </select>
     </div>
-    <!-- Сортировка -->
     <div class="sort">
       <label for="sort-order" class="sort-label">Сортировать по дате:</label>
       <select id="sort-order" v-model="sortOrder" class="sort-select">
@@ -18,14 +16,12 @@
         <option value="asc">Сначала старые</option>
       </select>
     </div>
-    <!-- Список заказов -->
     <ul class="order-list">
       <li v-for="order in filteredOrders" :key="order.id" class="order-item">
         <div class="order-info">
           <strong>Заказ №{{ order.orderNumber || order.id }}</strong>
           <span class="order-status">{{ order.status }}</span>
           <small class="order-date">от {{ formatDate(order.orderDate) }}</small>
-          <!-- Отображение SHIPMENTDATE только если заказ выполнен -->
           <small v-if="order.status === 'Done'" class="shipment-date">
             Отгружено: {{ formatDate(order.shipmentDate) }}
           </small>

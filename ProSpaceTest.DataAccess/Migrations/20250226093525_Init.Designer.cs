@@ -11,8 +11,8 @@ using ProSpaceTest.DataAccess;
 namespace ProSpaceTest.DataAccess.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20250205170618_AddUniqueIndexToOrderNumber")]
-    partial class AddUniqueIndexToOrderNumber
+    [Migration("20250226093525_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,24 +26,8 @@ namespace ProSpaceTest.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Firstname")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("LastLogin")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Lastname")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -58,9 +42,6 @@ namespace ProSpaceTest.DataAccess.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
 
                     b.ToTable("User");
                 });
@@ -91,9 +72,15 @@ namespace ProSpaceTest.DataAccess.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Customer");
@@ -189,13 +176,15 @@ namespace ProSpaceTest.DataAccess.Migrations
                     b.ToTable("OrderItem");
                 });
 
-            modelBuilder.Entity("ProSpaceTest.Core.Models.UserEntity", b =>
+            modelBuilder.Entity("ProSpaceTest.DataAccess.Entites.CustomerEntity", b =>
                 {
-                    b.HasOne("ProSpaceTest.DataAccess.Entites.CustomerEntity", "Customer")
-                        .WithOne("User")
-                        .HasForeignKey("ProSpaceTest.Core.Models.UserEntity", "CustomerId");
+                    b.HasOne("ProSpaceTest.Core.Models.UserEntity", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("ProSpaceTest.DataAccess.Entites.CustomerEntity", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProSpaceTest.DataAccess.Entites.OrderEntity", b =>
@@ -228,12 +217,14 @@ namespace ProSpaceTest.DataAccess.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("ProSpaceTest.Core.Models.UserEntity", b =>
+                {
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("ProSpaceTest.DataAccess.Entites.CustomerEntity", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProSpaceTest.DataAccess.Entites.ItemEntity", b =>

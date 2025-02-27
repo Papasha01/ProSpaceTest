@@ -1,6 +1,5 @@
 <template>
   <div class="product-list container mt-5">
-    <!-- Заголовок и элементы управления -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h3 class="mb-0">Каталог товаров</h3>
       <div class="d-flex gap-2">

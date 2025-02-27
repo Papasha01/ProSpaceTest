@@ -187,7 +187,7 @@ namespace ProSpaceTest.Controllers
             try
             {
                 await _orderService.DeleteOrder(id);
-                return NoContent();
+                return Accepted();
             }
             catch (KeyNotFoundException)
             {

@@ -9,7 +9,7 @@
         public string Address { get; set; } = string.Empty;
         public decimal Discount { get; set; }
 
-        public static (Customer Customer, string Error) Create(Guid id, string name, string code, string address, decimal discount = 0)
+        public static (Customer Customer, string Error) Create(Guid id, Guid userId, string name, string code, string address, decimal discount = 0)
         {
             var error = string.Empty;
             if (string.IsNullOrEmpty(name) || name.Length > 250)

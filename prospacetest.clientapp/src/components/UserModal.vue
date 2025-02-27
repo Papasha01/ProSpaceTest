@@ -7,32 +7,53 @@
         </h4>
         <form @submit.prevent="handleSubmit">
           <div class="form-group">
-            <label>Код</label>
-            <input type="text"
-                   v-model="newUser.code"
-                   class="form-control"
-                   :class="{ 'is-invalid': newUser.code && !isCodeValid }"
-                   required />
-            <div v-if="newUser.code && !isCodeValid" class="invalid-feedback">
-              Код «ХХХХ-ГГГГ» где Х – число, ГГГГ – год
+            <label>Логин</label>
+            <input type="text" v-model="newUser.login" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" v-model="newUser.password" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Активен</label>
+            <input type="checkbox" v-model="newUser.isActive" class="form-check-input" />
+          </div>
+          <div class="form-group">
+            <label>Роль</label>
+            <div>
+              <input type="radio" id="admin" value="Admin" v-model="newUser.role" @change="onRoleChange">
+              <label for="admin">Admin</label>
+            </div>
+            <div>
+              <input type="radio" id="customer" value="Customer" v-model="newUser.role" @change="onRoleChange">
+              <label for="customer">Customer</label>
             </div>
           </div>
-
-          <div class="form-group">
-            <label>Имя</label>
-            <input type="text" v-model="newUser.name" class="form-control" required />
+          <div v-if="newUser.role === 'Customer'" class="customer-fields">
+            <div class="form-group">
+              <label>Имя</label>
+              <input type="text" v-model="newUser.customer.name" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label>Код</label>
+              <input type="text"
+                     v-model="newUser.customer.code"
+                     class="form-control"
+                     :class="{ 'is-invalid': newUser.customer.code && !isCodeValid }"
+                     required />
+              <div v-if="newUser.customer.code && !isCodeValid" class="invalid-feedback">
+                Код «ХХХХ-ГГГГ» где Х – число, ГГГГ – год
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Адрес</label>
+              <input type="text" v-model="newUser.customer.address" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label>Скидка</label>
+              <input type="number" v-model.number="newUser.customer.discount" class="form-control" min="0" required />
+            </div>
           </div>
-
-          <div class="form-group">
-            <label>Адрес</label>
-            <input type="text" v-model="newUser.address" class="form-control" required />
-          </div>
-
-          <div class="form-group">
-            <label>Скидка</label>
-            <input type="number" v-model.number="newUser.discount" class="form-control" min="0" required />
-          </div>
-
           <div class="form-actions">
             <button type="button" @click="closeModal" class="btn btn-secondary">
               Отмена
@@ -51,11 +72,23 @@
   export default {
     props: {
       showModal: Boolean,
-      user: Object
+      user: Object,
+      customer: Object
     },
     data() {
       return {
-        newUser: { code: "", name: "", address: "", discount: 0 }
+        newUser: {
+          login: "",
+          password: "",
+          isActive: true,
+          role: "Customer",
+          customer: {
+            name: "",
+            code: "",
+            address: "",
+            discount: 0
+          }
+        }
       };
     },
     computed: {
@@ -63,16 +96,26 @@
         return !!this.user?.id;
       },
       isCodeValid() {
-    const pattern = /^\d{4}-(19\d{2}|20\d{2}|2100)$/; 
-    return pattern.test(this.newUser.code);
-  }
-
+        const pattern = /^\d{4}-(19\d{2}|20\d{2}|2100)$/;
+        return pattern.test(this.newUser.customer.code);
+      }
     },
     watch: {
       user: {
         immediate: true,
         handler(newUser) {
-          this.newUser = newUser ? { ...newUser } : { code: "", name: "", address: "", discount: 0 };
+          this.newUser = newUser ? { ...newUser, customer: this.customer || {} } : {
+            login: "",
+            password: "",
+            isActive: true,
+            role: "Customer",
+            customer: {
+              name: "",
+              code: "",
+              address: "",
+              discount: 0
+            }
+          };
         }
       }
     },
@@ -81,8 +124,18 @@
         this.$emit("close");
       },
       handleSubmit() {
-        if (this.isCodeValid) {
+        if (this.isCodeValid || this.newUser.role === "Admin") {
           this.$emit("submit", this.newUser);
+        }
+      },
+      onRoleChange() {
+        if (this.newUser.role === "Admin") {
+          this.newUser.customer = {
+            name: "",
+            code: "",
+            address: "",
+            discount: 0
+          };
         }
       }
     }
@@ -132,5 +185,9 @@
   .invalid-feedback {
     color: red;
     font-size: 12px;
+  }
+
+  .customer-fields {
+    margin-top: 20px;
   }
 </style>

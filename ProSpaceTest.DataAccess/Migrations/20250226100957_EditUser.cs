@@ -5,24 +5,24 @@
 namespace ProSpaceTest.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUniqueIndexToOrderNumber : Migration
+    public partial class EditUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateIndex(
-                name: "IX_Order_OrderNumber",
-                table: "Order",
-                column: "OrderNumber",
-                unique: true);
+            migrationBuilder.RenameColumn(
+                name: "PasswordHash",
+                table: "User",
+                newName: "Password");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Order_OrderNumber",
-                table: "Order");
+            migrationBuilder.RenameColumn(
+                name: "Password",
+                table: "User",
+                newName: "PasswordHash");
         }
     }
 }

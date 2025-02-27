@@ -6,6 +6,7 @@ namespace ProSpaceTest.Core.Abstractions
     {
         Task<List<Customer>> GetAllCustomers();
         Task<Customer> GetCustomerById(Guid id);
+        Task<Customer> GetCustomerByUserId(Guid id);
         Task<Customer> GetCustomerByCode(string code);
         Task<Guid> CreateCustomer(Customer customer);
         Task<Guid> UpdateCustomer(Customer customer);

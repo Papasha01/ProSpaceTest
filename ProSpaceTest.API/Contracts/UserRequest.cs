@@ -1,8 +1,7 @@
 ﻿namespace ProSpaceTest.API.Contracts
 {
-    public record UserResponse(
-    Guid Id,
+    public record UserRequest(
     string Login,
-    string Role,
+    string Password,
     bool IsActive);
 }

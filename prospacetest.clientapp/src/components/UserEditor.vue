@@ -3,7 +3,11 @@
     <h3 class="heading">Редактирование пользователей</h3>
     <ul class="user-list">
       <li v-for="user in users" :key="user.id" class="user-item">
-        <span>{{ user.name }} - {{ user.code }}</span>
+        <div class="user-info">
+          <span>{{ user.id }}</span>
+          <span>{{ user.login }}</span>
+          <span>{{ user.role }}</span>
+        </div>
         <div>
           <button @click="editUser(user)" class="edit-btn">Редактировать</button>
           <button @click="deleteUser(user.id)" class="delete-btn">Удалить</button>
@@ -11,9 +15,9 @@
       </li>
     </ul>
     <button @click="addUser" class="add-btn">Добавить пользователя</button>
-
     <UserModal :showModal="isModalVisible"
                :user="currentUser"
+               :customer="currentCustomer"
                @close="closeModal"
                @submit="handleSaveUser" />
   </div>
@@ -29,13 +33,14 @@
         users: [],
         isModalVisible: false,
         currentUser: {},
+        currentCustomer: {},
         isSaving: false
       };
     },
     methods: {
       async fetchUsers() {
         try {
-          const response = await fetch('https://localhost:7077/api/Customer');
+          const response = await fetch('https://localhost:7077/api/User/GetAllUsers');
           if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
           this.users = await response.json();
         } catch (error) {
@@ -45,16 +50,26 @@
       },
       addUser() {
         this.currentUser = {};
+        this.currentCustomer = {};
         this.isModalVisible = true;
       },
-      editUser(user) {
+      async editUser(user) {
         this.currentUser = { ...user };
+        try {
+          const response = await fetch(`https://localhost:7077/api/Customer/GetCustomerByUserId/${user.id}`);
+          if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+          this.currentCustomer = await response.json();
+        } catch (error) {
+          console.error('Ошибка загрузки данных о пользователе:', error);
+          alert('Не удалось загрузить данные о пользователе.');
+          this.currentCustomer = {};
+        }
         this.isModalVisible = true;
       },
       async deleteUser(userId) {
         if (!confirm("Вы уверены, что хотите удалить пользователя?")) return;
         try {
-          const response = await fetch(`https://localhost:7077/api/Customer/${userId}`, {
+          const response = await fetch(`https://localhost:7077/api/User/delete/${userId}`, {
             method: "DELETE",
             headers: { "accept": "*/*" }
           });
@@ -62,7 +77,7 @@
           this.fetchUsers();
         } catch (error) {
           console.error("Ошибка удаления пользователя:", error);
-          alert("Эти пользователи связаны с таблицей User, и я не стал делать каскадное удаление, потому что для этого надо добавлять работу API с user, а время 4:44 утра, сдавать тестовое через 6 часов, а мне еще на завод вставать в 7.40. В общем косяк признаю.");
+          alert("Не удалось удалить пользователя.");
         }
       },
       closeModal() {
@@ -74,14 +89,31 @@
         this.isSaving = true;
         try {
           const isEdit = !!userData.id;
-          const method = isEdit ? 'PUT' : 'POST';
-          const url = isEdit ? `https://localhost:7077/api/Customer/${userData.id}` : 'https://localhost:7077/api/Customer';
-          const response = await fetch(url, {
-            method,
+          const userResponse = await fetch(isEdit ? `https://localhost:7077/api/User/UpdateUser?id=${userData.id}` : 'https://localhost:7077/api/User/CreateAccount', {
+            method: isEdit ? 'PUT' : 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
+            body: JSON.stringify({
+              login: userData.login,
+              password: userData.password,
+              isActive: userData.isActive,
+              role: userData.role,
+              name: userData.customer?.name,
+              code: userData.customer?.code,
+              address: userData.customer?.address,
+              discount: userData.customer?.discount
+            }),
           });
-          if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+          if (!userResponse.ok) throw new Error(`Ошибка HTTP: ${userResponse.status}`);
+
+          if (isEdit && userData.customer) {
+            const customerResponse = await fetch(`https://localhost:7077/api/Customer/${userData.customer.id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(userData.customer),
+            });
+            if (!customerResponse.ok) throw new Error(`Ошибка HTTP: ${customerResponse.status}`);
+          }
+
           alert('Успешно сохранено');
         } catch (error) {
           console.error('Ошибка сохранения:', error);
@@ -125,6 +157,18 @@
     border-radius: 4px;
   }
 
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   .edit-btn {
     background-color: #ffc107;
     border: none;
@@ -160,7 +204,6 @@
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
-    margin-left: 10px;
   }
 
     .delete-btn:hover {

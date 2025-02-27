@@ -170,7 +170,7 @@ namespace ProSpaceTest.Controllers
             try
             {
                 await _itemService.DeleteItem(id);
-                return NoContent();
+                return Accepted();
             }
             catch (KeyNotFoundException)
             {

@@ -16,7 +16,6 @@
     </ul>
     <button @click="addProduct" class="add-btn">Добавить товар</button>
 
-    <!-- Модальное окно -->
     <ProductModal :showModal="isModalVisible"
                   :product="currentProduct"
                   @close="closeModal"
@@ -36,7 +35,7 @@
         isSaving: false,
         products: [],
         isModalVisible: false,
-        currentProduct: {} // Данные товара для редактирования/добавления
+        currentProduct: {} 
       };
     },
     methods: {
@@ -51,7 +50,7 @@
 
     if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
 
-    this.fetchProducts(); // Обновляем список после удаления
+    this.fetchProducts();
   } catch (error) {
     console.error("Ошибка удаления товара:", error);
     alert("Не удалось удалить товар.");

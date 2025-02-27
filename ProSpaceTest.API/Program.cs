@@ -22,6 +22,9 @@ builder.Services.AddScoped<IOrderService, ProSpaceTest.Application.Services.Orde
 builder.Services.AddScoped<IUserRepository, ProSpaceTest.DataAccess.Repository.UserRepository>();
 builder.Services.AddScoped<IUserService, ProSpaceTest.Application.Services.UserService>();
 
+builder.Services.AddScoped<IAccountCreationRepository, ProSpaceTest.DataAccess.Repository.AccountCreationRepository>();
+builder.Services.AddScoped<IAccountCreationService, ProSpaceTest.Application.Services.AccountCreationService>();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
